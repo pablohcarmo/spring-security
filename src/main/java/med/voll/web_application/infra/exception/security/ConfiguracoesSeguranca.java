@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.jaas.memory.InMemoryConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
@@ -31,5 +33,21 @@ public class ConfiguracoesSeguranca {
 
         //Por enquanto, estes usuários serão salvos em memória ao invés de um BD.
         return new InMemoryUserDetailsManager(usuario1, usuario2);
+    }
+
+    @Bean
+    // Este método HTTP já possui todos os filtros padrão do Spring
+    public SecurityFilterChain filtrosSeguranca(HttpSecurity http) throws Exception {
+        // Autorizamos realizar requisições HTTP na aplicação
+        return http.authorizeHttpRequests(req -> {
+            req.requestMatchers("/css/**", "/js/**", "/assets/**").permitAll(); // Informamos ao Spring para não perder a configuração do front-end
+            req.anyRequest().authenticated(); // As requisições são bloqueadas por padrão, enquanto o usuário não estiver logado
+            })
+
+                // Passaremos um formulário customizado parametrizado
+                .formLogin(form -> form.loginPage("/login")
+                .defaultSuccessUrl("/") // Após o login, manda para home
+                .permitAll()) // Permite o acesso à aplicação após o sucesso no login
+                .build();
     }
 }
