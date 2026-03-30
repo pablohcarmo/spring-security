@@ -49,7 +49,7 @@ public class ConfiguracoesSeguranca {
                 .defaultSuccessUrl("/") // Após o login, manda para home
                 .permitAll()) // Permite o acesso à aplicação após o sucesso no login
                 .logout(logout ->
-                        logout.logoutSuccessUrl("/login?logout") // Crianos um objeto que redireciona para o endereço
+                        logout.logoutSuccessUrl("/login?logout") // Criamos um objeto que redireciona para o endereço
                         .permitAll()) // Permitimos que o usuário faça o login novamente pela mesma página
                 .build();
     }

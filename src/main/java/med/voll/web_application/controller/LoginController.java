@@ -10,4 +10,9 @@ public class LoginController {
         //Método para mapear e carregar a página de login já criada
         return "autenticacao/login";
     }
+
+    @GetMapping ("/logout")
+    public String carregaPaginaLogout() {
+        return "autenticacao/logout";
+    }
 }
