@@ -51,6 +51,10 @@ public class ConfiguracoesSeguranca {
                 .logout(logout ->
                         logout.logoutSuccessUrl("/login?logout") // Criamos um objeto que redireciona para o endereço
                         .permitAll()) // Permitimos que o usuário faça o login novamente pela mesma página
+                .rememberMe(rememberMe -> rememberMe.key("lembrarDeMim") // Construímos um objeto com a chave que utilizamos para gerar o cookie RememberMe
+                                                // É recomendado utilizar um secret que será utilizado para codificar a chave aleatória, tendo ela, é possível decodificar e entender quem é este cookie
+                        //.tokenValiditySeconds(30) // Tempo em segundos para a expiração do cookie RememberMe
+                        .alwaysRemember(true))
                 .build();
     }
 }
