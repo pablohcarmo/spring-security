@@ -23,6 +23,7 @@ public class ConfiguracoesSeguranca {
         // Autorizamos realizar requisições HTTP na aplicação
         return http.authorizeHttpRequests(req -> {
             req.requestMatchers("/css/**", "/js/**", "/assets/**").permitAll(); // Informamos ao Spring para não perder a configuração do front-end
+            req.requestMatchers("/", "/index", "/home").permitAll();
             req.anyRequest().authenticated(); // As requisições são bloqueadas por padrão, enquanto o usuário não estiver logado
             })
 
