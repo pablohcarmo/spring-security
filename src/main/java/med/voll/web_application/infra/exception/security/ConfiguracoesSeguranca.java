@@ -9,32 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class ConfiguracoesSeguranca {
-
-
-    // Este método cria os nossos próprios usuários e retorna seus dados para o objeto UserDetailsService
-    @Bean
-    public UserDetailsService dadosUsuariosCadastrados() {
-        // Criamos dois usuários pré-definidos
-        UserDetails usuario1 = User.builder()
-                .username("joao@email.com")
-                .password("{noop}joao123")
-                .build();
-
-        UserDetails usuario2 = User.builder()
-                .username("maria@email.com")
-                .password("{noop}maria123")
-                .build();
-
-        //Por enquanto, estes usuários serão salvos em memória ao invés de um BD.
-        return new InMemoryUserDetailsManager(usuario1, usuario2);
-    }
-
     @Bean
     // Este método HTTP já possui todos os filtros padrão do Spring
     public SecurityFilterChain filtrosSeguranca(HttpSecurity http) throws Exception {
@@ -56,5 +38,11 @@ public class ConfiguracoesSeguranca {
                         //.tokenValiditySeconds(30) // Tempo em segundos para a expiração do cookie RememberMe
                         .alwaysRemember(true))
                 .build();
+    }
+
+    @Bean
+    public PasswordEncoder codificadorDeSenha() {
+        // O codificador precisa retornar uma instância de um password encoder.
+        return new BCryptPasswordEncoder();
     }
 }
